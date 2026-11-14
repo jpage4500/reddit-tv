@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home feed</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+body{margin:0}
+button{font:inherit;color:inherit;border:0;padding:0;cursor:pointer;background:transparent}
+.tvroot:focus{outline:none}
+@keyframes sofaprog{from{width:0%}to{width:100%}}
+.prog-on{animation:sofaprog 14s linear infinite}
+.prog-paused{animation:sofaprog 14s linear infinite;animation-play-state:paused}
+.prog-off{width:0%}
+</style>
+</helmet>
+<div class="tvroot" tabIndex="0" ref="{{setRoot}}" onKeyDown="{{onKey}}" onFocus="{{onFocus}}" onBlur="{{onBlur}}" style="width: 1920px; height: 1080px; box-sizing: border-box; overflow: hidden; position: relative; background: #0B0C0E; color: #F4F5F7; font-family: Inter, system-ui, sans-serif">
+
+<div style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: hidden">
+<div style="position: absolute; left: 96px; right: 96px; top: 176px; transition: transform 320ms ease; transform: translateY({{gridY}}px)">
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 32px; row-gap: 40px">
+<sc-for list="{{posts}}" as="p" hint-placeholder-count="8">
+<button onClick="{{p.pick}}" aria-label="{{p.title}}" style="height: 384px; box-sizing: border-box; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; text-align: left; transition: transform 180ms ease, background 180ms ease; transform: scale({{p.scale}}); background: {{p.cardBg}}; box-shadow: {{p.shadow}}; position: relative; z-index: {{p.z}}">
+
+<div style="position: relative; width: 100%; height: 230px; flex-shrink: 0; background: {{p.bg}}">
+<sc-if value="{{p.isText}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; inset: 0; box-sizing: border-box; padding: 22px 26px; font-size: 22px; line-height: 1.45; color: #C9CED6; overflow: hidden">{{p.body}}</div>
+</sc-if>
+<sc-if value="{{p.isMedia}}" hint-placeholder-val="{{true}}">
+<div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.55)">
+<svg aria-hidden="true" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="9" cy="10" r="1.6"></circle><path d="M4 18l5-5 3 3 3-4 5 6"></path></svg>
+</div>
+</sc-if>
+
+<span style="position: absolute; right: 12px; bottom: 12px; background: rgba(11,12,14,0.88); color: #F4F5F7; font-size: 21px; font-weight: 600; padding: 4px 10px; border-radius: 8px">{{p.badge}}</span>
+
+<sc-if value="{{p.playing}}" hint-placeholder-val="{{false}}">
+<span style="position: absolute; left: 12px; top: 12px; display: flex; align-items: center; gap: 8px; background: rgba(11,12,14,0.88); font-size: 19px; font-weight: 600; padding: 5px 12px; border-radius: 16px">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>
+<span>Playing · muted</span>
+</span>
+</sc-if>
+<sc-if value="{{p.showPaused}}" hint-placeholder-val="{{false}}">
+<span style="position: absolute; left: 12px; top: 12px; display: flex; align-items: center; gap: 8px; background: rgba(11,12,14,0.88); font-size: 19px; font-weight: 600; padding: 5px 12px; border-radius: 16px">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5l12 7-12 7z"></path></svg>
+<span>Paused</span>
+</span>
+</sc-if>
+<sc-if value="{{p.isVideo}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 6px">
+<div class="{{p.progClass}}" style="height: 6px; background: #FF5A36"></div>
+</div>
+</sc-if>
+
+<sc-if value="{{p.hasPrev}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; left: 10px; top: 87px; width: 52px; height: 52px; border-radius: 50%; background: rgba(11,12,14,0.85); display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F4F5F7" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
+</div>
+</sc-if>
+<sc-if value="{{p.hasNext}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; right: 10px; top: 87px; width: 52px; height: 52px; border-radius: 50%; background: rgba(11,12,14,0.85); display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F4F5F7" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"></path></svg>
+</div>
+</sc-if>
+</div>
+
+<div style="flex-grow: 1; box-sizing: border-box; padding: 18px 22px 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 27px; font-weight: 500; line-height: 35px; height: 70px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; color: {{p.titleColor}}">{{p.title}}</div>
+<div style="font-size: 21px; line-height: 28px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: {{p.metaColor}}">{{p.meta}}</div>
+</div>
+</button>
+</sc-for>
+</div>
+</div>
+</div>
+
+<header style="position: absolute; left: 0; right: 0; top: 0; height: 160px; box-sizing: border-box; padding: 44px 96px 0; display: flex; align-items: flex-start; gap: 28px; background: linear-gradient(#0B0C0E 78%, rgba(11,12,14,0))">
+<div aria-hidden="true" style="width: 88px; height: 88px; border-radius: 50%; background: #FF5A36; display: flex; align-items: center; justify-content: center; color: #FFFFFF">
+<svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+</div>
+<div style="height: 88px; display: flex; flex-direction: column; justify-content: center; gap: 4px">
+<div style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 40px; line-height: 1">{{feedName}}</div>
+<div style="font-size: 22px; color: #AEB4BF">Best · press Left for menu</div>
+</div>
+<div style="flex-grow: 1"></div>
+<sc-if value="{{needsFocus}}" hint-placeholder-val="{{false}}">
+<span style="margin-top: 22px; border-radius: 14px; background: #FFB84D; color: #15181D; padding: 10px 20px; font-size: 21px; font-weight: 600">Prototype: click a tile, then use arrow keys, Enter and Esc</span>
+</sc-if>
+<div style="height: 88px; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; gap: 2px">
+<div style="font-size: 46px; font-weight: 600; line-height: 1">4:09 PM</div>
+<div style="font-size: 22px; color: #D5D9E0">Tue Nov 10</div>
+</div>
+<div style="width: 72px; height: 72px; margin-top: 8px; border-radius: 50%; background: #3B4C63; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 30px">C</div>
+</header>
+
+<div style="position: absolute; inset: 0; background: rgba(5,6,8,0.72); transition: opacity 240ms ease; opacity: {{scrimOpacity}}; pointer-events: none"></div>
+
+<nav aria-label="Menu" style="position: absolute; left: 0; top: 0; bottom: 0; width: 560px; background: #15181D; box-sizing: border-box; padding: 44px 32px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 0 80px rgba(0,0,0,0.6); transition: transform 260ms ease; transform: translateX({{sideX}}px)">
+<div style="display: flex; align-items: center; gap: 20px; padding: 0 20px; margin-bottom: 24px">
+<div style="width: 64px; height: 64px; border-radius: 18px; background: #FFB84D; color: #15181D; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 36px">S</div>
+<span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 36px">Sofa</span>
+</div>
+<sc-for list="{{menu}}" as="m" hint-placeholder-count="9">
+<sc-if value="{{m.header}}" hint-placeholder-val="{{false}}">
+<div style="font-size: 21px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #AEB4BF; padding: 20px 20px 8px">Your communities</div>
+</sc-if>
+<button onClick="{{m.pick}}" style="height: 68px; border-radius: 34px; display: flex; align-items: center; gap: 20px; padding: 0 20px; font-size: 28px; text-align: left; background: {{m.bg}}; color: {{m.fg}}; font-weight: {{m.weight}}">
+<span style="width: 40px; height: 40px; border-radius: 50%; color: #F4F5F7; display: flex; align-items: center; justify-content: center; font-size: 19px; font-weight: 700; background: {{m.dot}}">{{m.initial}}</span>
+<span>{{m.name}}</span>
+</button>
+</sc-for>
+<div style="flex-grow: 1"></div>
+<div style="display: flex; align-items: center; gap: 12px; font-size: 22px; color: #AEB4BF; padding: 0 20px">
+<span style="border: 2px solid #5B626E; border-radius: 10px; padding: 3px 12px; font-weight: 700; color: #D5D9E0">Right</span>
+<span>or</span>
+<span style="border: 2px solid #5B626E; border-radius: 10px; padding: 3px 12px; font-weight: 700; color: #D5D9E0">Back</span>
+<span>Close</span>
+</div>
+</nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"feed":{"editor":"enum","options":["Home","Popular","r/space","r/woodworking","r/AskReddit","r/hiking","r/Breadit"],"default":"Home"},"menu":{"editor":"enum","options":["closed","open"],"default":"closed"},"$preview":{"width":1920,"height":1080}}'>
+const POSTS = [
+  { sub: 'r/space', age: '5h', votes: '24.3k', title: 'The Milky Way over the Atacama, stitched from 40 exposures', kind: 'image', bg: '#2F4A5E' },
+  { sub: 'r/woodworking', age: '9h', votes: '8.9k', title: 'Cutting a dovetail joint by hand, start to finish, with no power tools', kind: 'video', bg: '#5A4632', len: '0:42' },
+  { sub: 'r/hiking', age: '1d', votes: '3.4k', title: 'Three days on the Tour du Mont Blanc in early autumn', kind: 'gallery', gallery: ['#3D5540', '#4A5E6B', '#5E5A3D', '#3F4F63'] },
+  { sub: 'r/AskReddit', age: '3h', votes: '15.7k', title: 'What small habit changed your life the most?', kind: 'text', bg: '#1A1D22', body: 'Mine was learning to say no without explaining myself. It took years, and one very long week of saying yes to everything, before I noticed.' },
+  { sub: 'r/Breadit', age: '2h', votes: '2.1k', title: 'My first attempt at a sourdough boule', kind: 'gallery', gallery: ['#6B4F3A', '#5E3F3F', '#7A6448'] },
+  { sub: 'r/space', age: '14h', votes: '7.3k', title: 'Timelapse of a rocket launch seen from 60 miles away', kind: 'video', bg: '#3E3A5C', len: '1:15' },
+  { sub: 'r/hiking', age: '6h', votes: '5.0k', title: 'Sunrise from the summit after a 2 a.m. start', kind: 'image', bg: '#5B4A3A' },
+  { sub: 'r/woodworking', age: '20h', votes: '1.3k', title: 'Is a hand plane worth it for a beginner with a small apartment shop?', kind: 'text', bg: '#1A1D22', body: 'I have room for a small bench and not much else. Would a single good plane get more use than a cheap power planer?' },
+  { sub: 'r/aww', age: '4h', votes: '31.2k', title: 'He waits by the door every day at exactly 5:15', kind: 'video', bg: '#4F5A3A', len: '0:28' },
+  { sub: 'r/EarthPorn', age: '11h', votes: '12.8k', title: 'Fog rolling through the valley at first light, Dolomites [OC]', kind: 'image', bg: '#3A4A5E' },
+  { sub: 'r/cooking', age: '7h', votes: '4.6k', title: 'Weeknight ramen that takes 20 minutes, step by step', kind: 'gallery', gallery: ['#6B3F2E', '#5E4A2E', '#4E3A30', '#6B5532', '#5A3A3A'] },
+  { sub: 'r/todayilearned', age: '8h', votes: '19.4k', title: 'TIL octopuses taste with the suckers on their arms', kind: 'text', bg: '#1A1D22', body: 'Each sucker has thousands of chemical receptors, so an arm can tell whether something is food just by touching it.' }
+];
+const MENU = [
+  { name: 'Search', initial: '?', dot: '#2A2E37' },
+  { name: 'Home', initial: 'H', dot: '#2A2E37' },
+  { name: 'Popular', initial: 'P', dot: '#2A2E37' },
+  { name: 'Saved', initial: 'S', dot: '#2A2E37' },
+  { name: 'r/space', initial: 's', dot: '#2F4A5E', header: true },
+  { name: 'r/woodworking', initial: 'w', dot: '#5A4632' },
+  { name: 'r/AskReddit', initial: 'a', dot: '#54405E' },
+  { name: 'r/hiking', initial: 'h', dot: '#3D5540' },
+  { name: 'r/Breadit', initial: 'b', dot: '#5E3F3F' }
+];
+const COLS = 4;
+const ROW_H = 424;
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const feed = props.feed || 'Home';
+    let si = MENU.findIndex((m) => m.name === feed);
+    if (si < 0) si = 1;
+    this.state = { i: 0, pos: {}, paused: {}, side: props.menu === 'open', si, feed, focused: false };
+    this.root = null;
+  }
+  componentDidMount() {
+    setTimeout(() => { if (this.root) this.root.focus(); }, 60);
+  }
+  go(i) {
+    if (i >= 0 && i < POSTS.length) this.setState({ i });
+  }
+  key(e) {
+    const k = e.key;
+    const handled = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', 'Escape', 'Backspace', ' '];
+    if (handled.indexOf(k) === -1) return;
+    e.preventDefault();
+    const s = this.state;
+    if (s.side) {
+      if (k === 'ArrowUp') this.setState({ si: Math.max(0, s.si - 1) });
+      else if (k === 'ArrowDown') this.setState({ si: Math.min(MENU.length - 1, s.si + 1) });
+      else if (k === 'Enter' || k === ' ') this.setState({ side: false, feed: MENU[s.si].name, i: 0 });
+      else if (k === 'ArrowRight' || k === 'Escape' || k === 'Backspace') this.setState({ side: false });
+      return;
+    }
+    const p = POSTS[s.i];
+    const at = s.pos[s.i] || 0;
+    const col = s.i % COLS;
+    const isGallery = p.kind === 'gallery';
+    if (k === 'ArrowDown') {
+      if (s.i + COLS < POSTS.length) this.go(s.i + COLS);
+    } else if (k === 'ArrowUp') {
+      this.go(s.i - COLS);
+    } else if (k === 'ArrowRight') {
+      if (isGallery && at < p.gallery.length - 1) this.setState({ pos: Object.assign({}, s.pos, { [s.i]: at + 1 }) });
+      else if (col < COLS - 1) this.go(s.i + 1);
+    } else if (k === 'ArrowLeft') {
+      if (isGallery && at > 0) this.setState({ pos: Object.assign({}, s.pos, { [s.i]: at - 1 }) });
+      else if (col > 0) this.go(s.i - 1);
+      else this.setState({ side: true });
+    } else if (k === 'Enter' || k === ' ') {
+      if (p.kind === 'video') this.setState({ paused: Object.assign({}, s.paused, { [s.i]: !s.paused[s.i] }) });
+    }
+  }
+  renderVals() {
+    const s = this.state;
+    const posts = POSTS.map((p, idx) => {
+      const focused = idx === s.i && !s.side;
+      const at = s.pos[idx] || 0;
+      const isGallery = p.kind === 'gallery';
+      const isVideo = p.kind === 'video';
+      const paused = !!s.paused[idx];
+      const playing = isVideo && focused && !paused;
+      let badge = 'Photo';
+      if (isVideo) badge = p.len;
+      else if (isGallery) badge = (at + 1) + ' / ' + p.gallery.length;
+      else if (p.kind === 'text') badge = 'Text';
+      return Object.assign({}, p, {
+        scale: focused ? 1.06 : 1,
+        z: focused ? 2 : 1,
+        cardBg: focused ? '#F4F5F7' : '#17191D',
+        shadow: focused ? '0 18px 48px rgba(0,0,0,0.55)' : 'none',
+        titleColor: focused ? '#0B0C0E' : '#F4F5F7',
+        metaColor: focused ? '#41464F' : '#AEB4BF',
+        meta: p.sub + ' · ' + p.votes + ' votes · ' + p.age,
+        bg: isGallery ? p.gallery[at] : p.bg,
+        isText: p.kind === 'text',
+        isMedia: p.kind !== 'text',
+        isVideo,
+        badge,
+        playing,
+        showPaused: isVideo && focused && paused,
+        progClass: playing ? 'prog-on' : (focused && isVideo ? 'prog-paused' : 'prog-off'),
+        hasPrev: focused && isGallery && at > 0,
+        hasNext: focused && isGallery && at < p.gallery.length - 1,
+        pick: () => { this.setState({ i: idx, side: false }); if (this.root) this.root.focus(); }
+      });
+    });
+    const menu = MENU.map((m, j) => {
+      const on = j === s.si;
+      return Object.assign({}, m, {
+        header: !!m.header,
+        bg: on ? '#F4F5F7' : 'transparent',
+        fg: on ? '#0B0C0E' : '#D5D9E0',
+        weight: on ? '700' : '500',
+        pick: () => { this.setState({ side: false, feed: m.name, i: 0, si: j }); if (this.root) this.root.focus(); }
+      });
+    });
+    const row = Math.floor(s.i / COLS);
+    const topRow = Math.max(0, row - 1);
+    return {
+      posts, menu,
+      gridY: -topRow * ROW_H,
+      sideX: s.side ? 0 : -600,
+      scrimOpacity: s.side ? 1 : 0,
+      feedName: s.feed,
+      needsFocus: !s.focused,
+      setRoot: (el) => { this.root = el; },
+      onKey: (e) => this.key(e),
+      onFocus: () => { if (!this.state.focused) this.setState({ focused: true }); },
+      onBlur: (e) => { if (this.root && e.relatedTarget && this.root.contains(e.relatedTarget)) return; if (this.state.focused) this.setState({ focused: false }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

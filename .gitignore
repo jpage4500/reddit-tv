@@ -1,0 +1,72 @@
+.gradle
+.idea
+build/
+local.properties
+*.iml
+.DS_Store
+captures/
+.externalNativeBuild
+.cxx
+*.apk
+*.ap_
+*.aab
+output.json
+
+# Gradle
+.gradle/
+build/
+
+# Android Studio
+*.iml
+.idea/
+local.properties
+captures/
+.externalNativeBuild
+.cxx
+
+# XCode
+*.xcuserdata
+*.lsanywhere
+*.xcuserstate
+# Keep the workspace structure, but ignore user-specific data inside it
+iosApp.xcworkspace/xcuserdata/
+DerivedData/
+.swiftpm/
+.xcode.env.local
+
+# Kotlin
+.kotlin/
+kotlin-js-store/
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# WebAssembly
+composeApp/build/dist/
+
+# macOS
+.DS_Store
+
+# Copilot
+copilot-*.md
+
+jdeploy/
+jdeploy-bundle/
+
+# keystore
+*.jks
+# play store service account key — androidApp/build.gradle.kts reads it from the repo root
+google-publisher.json
+# Python (scripts/*.py)
+__pycache__/
+*.pyc
+
+# demo recordings (record-demo.sh record) and the promo video made from them
+# (generate-promo-video.sh): large, and re-rendered rather than edited. the video goes to YouTube
+resources/video/
+
+# release notes the build scripts generate
+release-notes.txt
+combined-notes.txt

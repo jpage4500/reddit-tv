@@ -1,0 +1,114 @@
+11/11
+- New: RedditTV app scaffolded from Share to TV+ (Android, Android TV, iOS, desktop)
+- Sign in: QR code on the TV opens a sign-in page on your phone
+- Feed: 4-column TV grid with a slide-out menu on LEFT; phone list
+- Feed: LEFT/RIGHT steps through gallery images from the grid
+- Post: full media, then title, text and comments in one scroll
+- Settings: text size, sort, autoplay and NSFW options
+- Android: beta build shows as "RedditTV Beta" with a green icon
+- Desktop: releases publish to this repo via jDeploy on merge to main
+- Branding: new orange TV-mascot app icon in the spirit of reddit's logo
+- Strings: all screen text moved to strings.xml; unused cast strings removed
+- Logs: a successful upload no longer shows in red as an error
+- Post: "1 comments" and "1 more replies" now read in the singular
+Sign in: the focused TV button is now the yellow one, not always the first
+Sign in: the phone sign-in page has a 'Show password' checkbox
+Android TV: sign-in returns to the app as soon as reddit logs in, not ~30s later
+Feed: Hot no longer fails with HTTP 403 after signing in
+Feed: when reddit refuses a feed or post, it's read from old.reddit instead
+Android TV: pressing right into the sidebar no longer crashes the app
+Feed: home thumbnails load again (home was always read the slow way)
+Logs: debug mode is on by default, so every log line is saved to file
+Dialogs: the focused button is highlighted, not always OK
+Dialogs: title and icon are blue like the close button, not unreadable yellow
+Android TV: Back on the feed opens the menu; Back again exits the app
+Settings: signing out goes back to the sign-in screen
+Logs: the log file is now reddit-tv.log
+Feed: New and Rising show images, videos and galleries again
+Sign in: a branded 'Signing in' screen covers Reddit's white login page
+Android TV: left/right always move through the grid, not a gallery's images
+Android TV: moving left/right in the grid no longer makes it bounce
+Settings: text size and sort open a slider dialog instead of an inline stepper
+Dialogs: light look with brand-blue title, icons, switches and focus
+Settings: more room between rows; a rounded blue focus ring clear of the text
+Dialogs: Logs, full-screen panels and drop-down menus share the dialog style
+Search: new Search screen in the menu finds communities as you type
+Feed: votes and comments show in pills; long subreddit names keep their end
+Settings: text size is a percent, 70% to 200% in 10% steps (100% default)
+Settings: choice slider dialogs no longer show an OK button
+Android TV: Search types on an on-screen keyboard, not Fire TV's full screen one
+Android TV: Right closes the menu on a community that isn't in it
+Post: compact title header; media sized so the post's text shows below it
+Android TV: OK opens a post's image full screen; on a video it plays/pauses
+Android TV: hold OK on a post's video to watch it full screen
+Feed: long press a post for options: open it, go to its community, join/leave
+Feed: a community's header has a Join / Leave button
+Search: recent searches list what you typed, not the community you opened
+Android TV: DOWN/UP scroll through a long post or comment before moving on
+Post: the header has the community's Join / Leave button, at the right
+Feed: leaving a community no longer fails with HTTP 400
+Feed: the button of a joined community says Leave, and asks before leaving
+Android TV: Left on the Join button opens the menu; it can't take focus under it
+Android TV: RIGHT on a post's video mutes / unmutes it, and it's remembered
+Video: full screen player has a mute button
+Android TV: full screen video hides its controls until OK pauses it
+Android TV: grid videos show a small corner play badge, not a red circle
+Android TV: a video tile plays (muted) once it's focused
+Sign in: the logo sits large and faded behind the sign-in screen
+Desktop: arrow keys and Tab move focus, with a visible ring on buttons/posts
+Desktop: Escape goes back (closes a post, search or the menu)
+Signed out: feeds, posts and comments load from reddit's RSS when .json is refused
+Phone, Desktop: landscape / wide windows get the TV's grid and post layout
+Signed out: no Join button on communities or posts
+Search: signed out, says sign-in is needed instead of 'No communities match'
+Settings: text size shows 100%, not '100%%'
+Desktop: arrow keys open, move through and close (RIGHT) the menu
+Desktop: dialogs take focus and arrow keys move through them
+Desktop: keyboard works like the TV remote: grid, posts and menu start focused
+Search: DOWN from the search box moves to the results list
+Android TV: video tile keeps its image with a spinner until the video plays
+Text size: A−/A+ shows a toast with the new size ("Text size: 110%")
+Desktop: DOWN from the feed header's ☰/A−/A+ moves focus into the grid
+Desktop: LEFT from the ☰ menu button opens the menu
+Menu: UP from the top row no longer moves focus off-screen behind the menu
+Menu: reddit-style icons for Home, Popular, All, Search, Sign in, Settings
+Menu: a community without an icon shows reddit's "r/" circle
+Settings: hide pinned posts (on by default) and posts without media
+Desktop: a relaunch no longer shows you signed out until you sign in again
+Feed: link posts show reddit's external-link icon instead of the site name
+Android TV: video tiles start playing sooner (preload, mp4 preview, less buffer)
+Feed: moving UP to the first row no longer leaves it hidden under the header
+Feed: hiding posts without media no longer pages forever; text feeds show all
+Feed: the logo shows behind the spinner while a feed loads, not a black screen
+Menu: app logo in the header; select your name to sign in or out
+Feed: a focused button's outline now matches its rounded shape
+Android TV: video tiles no longer show player controls over the preview
+Post: a video reddit won't stream plays without sound, not 'open in browser'
+Feed: a tile's score and comment pills no longer get cut off at the bottom
+Post: a link with no picture no longer shows an empty media box
+Feed: the sort in the header picks how feeds are sorted
+Feed: sorting by New no longer comes up empty when reddit refuses it
+Feed: a short feed (Top of the day) no longer shows nothing with media hidden
+Feed: YouTube and other embedded links show their thumbnail
+Post: the remote scrolls the page smoothly instead of jumping block to block
+Post: a video floats into a corner as you scroll down to the comments
+Feed: link posts with no thumbnail show their page's preview image
+Feed: back from a post, the post you opened stays selected, not the first one
+Post: a playing video no longer shows a 'Playing' pill
+Feed: an empty community no longer leaves the keyboard with nothing to move to
+Feed: Top keeps going past today's posts into the week's, month's and beyond
+Phone: a video plays, muted, while it's the main post on screen
+Settings: Grid size picks 2, 3 or 4 columns for the TV / wide-window grid
+Feed: the header slides away scrolling down and comes back scrolling up
+Post: the status bar no longer covers the top of a post on a phone
+Post: the whole title shows, full width, lined up with the post's text
+Phone: a link post with no picture shows its site in a slim row, not a box
+Android: a post's video has a mute button inline, not just full screen
+Post: links in a post's text and comments show as links and open on tap
+Post: the floating video can be dragged anywhere and stays where it's left
+Feed: a text post's preview runs on as one paragraph, no blank lines
+Feed: a text post's preview has tighter line spacing
+Post: comment threads draw lines like reddit, one per open branch
+11/12
+Android TV: focusing a video tile no longer jumps focus to the filter button
+Android TV: BACK opening the menu now moves focus into it, not left on the grid

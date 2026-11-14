@@ -1,0 +1,58 @@
+{
+  "bin": {
+    "reddit-tv": "jdeploy-bundle/jdeploy.js"
+  },
+  "author": "Joe Page",
+  "description": "Browse Reddit from the couch: a remote-friendly grid for your TV and desktop",
+  "main": "index.js",
+  "preferGlobal": true,
+  "repository": {
+    "url": "https://github.com/jpage4500/reddit-tv.git"
+  },
+  "version": "1.0.0",
+  "jdeploy": {
+    "packageMacX64": "rtv-desktop-mac-x64",
+    "generateLegacyBundles": false,
+    "packageLinuxX64": "rtv-desktop-linux-x64",
+    "javaVersion": "21",
+    "packageMacArm64": "rtv-desktop-mac-arm64",
+    "packageLinuxArm64": "rtv-desktop-linux-arm64",
+    "title": "RedditTV",
+    "downloadPage": {
+      "platforms": [
+        "default"
+      ]
+    },
+    "fallbackToUniversal": true,
+    "packageWinX64": "rtv-desktop-win-x64",
+    "publishTargets": [
+      {
+        "name": "github: github",
+        "type": "GITHUB",
+        "url": "https://github.com/jpage4500/reddit-tv"
+      }
+    ],
+    "permissions": [
+      {
+        "name": "local_network",
+        "description": "RedditTV serves the phone sign-in page on your local network."
+      }
+    ],
+    "jar": "composeApp/build/libs/rtv-all.jar",
+    "javafx": false,
+    "platformBundlesEnabled": true,
+    "singleton": true
+  },
+  "dependencies": {
+    "command-exists-promise": "^2.0.2",
+    "node-fetch": "2.6.7",
+    "tar": "^4.4.8",
+    "yauzl": "^2.10.0",
+    "shelljs": "^0.8.4"
+  },
+  "license": "ISC",
+  "name": "reddit-tv",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+
+  <!-- RedditTV full icon: squared orange-red background + the mark from logo-foreground.svg.
+       squared on purpose - iOS and adaptive-Android apply their own corner mask; macOS/Linux/
+       jDeploy get one from mask_squircle* in scripts/generate-icons.sh. pure geometry, no <text>
+       and no bitmap. keep the content below in step with logo-foreground.svg -->
+  <defs>
+    <radialGradient id="bg" cx="34%" cy="26%" r="92%">
+      <stop offset="0%" stop-color="#FF6A2B"/>
+      <stop offset="100%" stop-color="#E03D00"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <!-- rabbit-ear antennas -->
+  <path d="M 452 404 L 372 236" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+  <path d="M 572 404 L 652 236" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+  <circle cx="366" cy="222" r="42" fill="#FFFFFF"/>
+  <circle cx="658" cy="222" r="42" fill="#FFFFFF"/>
+
+  <!-- ears -->
+  <circle cx="246" cy="560" r="58" fill="#FFFFFF"/>
+  <circle cx="778" cy="560" r="58" fill="#FFFFFF"/>
+
+  <!-- the TV: its screen is the face -->
+  <rect x="240" y="396" width="544" height="350" rx="120" fill="#FFFFFF"/>
+
+  <!-- eyes + smile -->
+  <circle cx="414" cy="548" r="46" fill="#FF4500"/>
+  <circle cx="610" cy="548" r="46" fill="#FF4500"/>
+  <path d="M 420 640 Q 512 702 604 640" fill="none" stroke="#1A1A1B" stroke-width="24" stroke-linecap="round"/>
+
+  <!-- stand -->
+  <rect x="432" y="770" width="160" height="30" rx="15" fill="#FFFFFF"/>
+</svg>

@@ -1,0 +1,224 @@
+name: Desktop (jDeploy)
+
+on:
+  push:
+    branches:
+      # build and deploy on merging to main
+      - main
+    tags:
+       # Triggers the deploy job when a tag is pushed
+      - '*'
+  workflow_dispatch:
+
+concurrency:
+  group: jdeploy-release-${{ github.repository }}
+  cancel-in-progress: false
+
+# the repo releases are published to: this one (it's public). keep in sync with package.json >
+# jdeploy.publishTargets[].url, scripts/build-desktop.sh and Branding.githubRepo
+env:
+  TARGET_REPO: jpage4500/reddit-tv
+
+# lets the default token create releases (the publish itself uses GH_TOKEN)
+permissions:
+  contents: write
+
+jobs:
+  # ==========================================
+  # JOB 1: Auto-Tag on Merge to Main
+  # ==========================================
+  tag-release:
+    # run on pushes to main OR when manually triggered via the GitHub UI
+    if: ${{ github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # CRITICAL: We must use the PAT here. If we use the default token,
+          # GitHub will not trigger the 'build-and-deploy' job below.
+          token: ${{ secrets.GH_TOKEN }}
+          fetch-depth: 0
+
+      - name: Get Version and Push Tag
+        run: |
+          # Calculate the commit count natively
+          COMMIT_COUNT=$(git rev-list --count HEAD)
+
+          # IMPORTANT: Prefix your base version here to match your Gradle output!
+          VERSION="1.0.${COMMIT_COUNT}"
+
+          echo "Calculated version: $VERSION"
+          
+          # Check if this tag already exists in the repo
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "✅ Tag $VERSION already exists. No new release needed."
+          else
+            echo "▶ Creating and pushing new tag: $VERSION"
+            git config user.name "GitHub Actions Bot"
+            git config user.email "<>"
+            git tag "$VERSION"
+            git push origin "$VERSION"
+          fi
+
+  # ==========================================
+  # JOB 2: Build and Deploy (Triggered by Tag)
+  # ==========================================
+  build-and-deploy:
+    # Only run this job if a Tag was pushed
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    outputs:
+      # build-dmg has nothing to build from without the jar, so it's skipped rather than run to fail
+      jar-uploaded: ${{ steps.upload-jar.outcome == 'success' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Write secrets to gradle.properties
+        uses: ./.github/actions/write-secrets
+        with:
+          secrets_json: ${{ toJSON(secrets) }}
+
+      - name: Cache Kotlin/Native compiler
+        uses: actions/cache@v4
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ hashFiles('**/*.gradle.kts', '**/*.gradle', 'gradle.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-konan-
+
+      - name: Setup Node.js & Cache NPM
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'package.json'
+
+      # the same script a local publish runs: builds the jar, publishes to the repo in package.json
+      # (= TARGET_REPO) via jDeploy, then adds the release notes. GH_TOKEN reaches it through
+      # gradle.properties. the version is the commit count, which is what this tag was named for
+      # view releases here: https://github.com/jpage4500/reddit-tv/releases
+      - name: Build, publish via jDeploy, add release notes
+        run: |
+          chmod +x scripts/build-desktop.sh scripts/gen_release_notes.sh
+          ./scripts/build-desktop.sh
+
+      # hand the jar to build-dmg rather than have the macOS runner build its own: that runner bills
+      # at 10x the Linux rate, and a second cold Gradle run doubles the dependency resolution.
+      # compression-level 0 because a jar is already a zip.
+      #
+      # continue-on-error: the release is already out by now, so a failed upload (e.g. the account's
+      # artifact storage quota being hit) only costs the DMG — it shouldn't mark the release failed
+      - name: Publish the jar for build-dmg
+        id: upload-jar
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: rtv-jar
+          path: composeApp/build/libs/rtv-all.jar
+          retention-days: 1
+          compression-level: 0
+          if-no-files-found: error
+
+      - name: Warn that the DMG will be skipped
+        if: steps.upload-jar.outcome == 'failure'
+        run: echo "::warning::couldn't upload the jar, so the signed DMG is skipped. re-run the workflow to add it"
+
+  # ==========================================
+  # JOB 3: Is there a signing identity to build a DMG with?
+  # ==========================================
+  # `secrets` is not a context a job-level `if` can read, so it's resolved here into an output
+  # that build-dmg can gate on
+  check-signing:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    outputs:
+      ready: ${{ steps.check.outputs.ready }}
+    steps:
+      - name: Look for the macOS signing secrets
+        id: check
+        env:
+          CERT_P12: ${{ secrets.MAC_CERT_P12_BASE64 }}
+          CERT_PASSWORD: ${{ secrets.MAC_CERT_PASSWORD }}
+          DEVELOPER_ID: ${{ secrets.MAC_DEVELOPER_ID }}
+          NOTARIZATION_PASSWORD: ${{ secrets.MAC_NOTARIZATION_PASSWORD }}
+        run: |
+          if [ -n "$CERT_P12" ] && [ -n "$CERT_PASSWORD" ] && \
+             [ -n "$DEVELOPER_ID" ] && [ -n "$NOTARIZATION_PASSWORD" ]; then
+            echo "✅ signing secrets present — the signed DMG will be built"
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::macOS signing secrets not set — skipping the signed DMG"
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  # ==========================================
+  # JOB 4: Signed + notarized macOS DMG
+  # ==========================================
+  # a SECOND download alongside the jDeploy installers. the .app inside is the same jDeploy
+  # launcher, so it still updates itself from TARGET_REPO; it just carries our Developer ID, so
+  # Gatekeeper opens it without a warning.
+  #
+  # macos-latest is required — codesign and notarytool exist nowhere else.
+  #
+  # needs build-and-deploy: it uploads into the release that job creates, and its "update release
+  # links" step has to land AFTER that job rewrites the release body, or the notes overwrite it.
+  #
+  # skipped rather than failed when unsigned: Gatekeeper blocks an unsigned downloaded bundle.
+  build-dmg:
+    needs: [build-and-deploy, check-signing]
+    if: needs.check-signing.outputs.ready == 'true' && needs.build-and-deploy.outputs.jar-uploaded == 'true'
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      # `jdeploy dmg` reads package.json's `jdeploy.jar`, so the artifact has to land on that path
+      - name: Download the jar built by build-and-deploy
+        uses: actions/download-artifact@v4
+        with:
+          name: rtv-jar
+          path: composeApp/build/libs
+
+      # spotlight indexing the freshly mounted dmg makes jdeploy's `hdiutil detach` fail with
+      # "Resource busy" (exit 16) — jdeploy doesn't retry, so keep spotlight off the volume
+      - name: Disable Spotlight indexing
+        run: sudo mdutil -a -i off || true
+
+      # the action imports the p12 into a throwaway keychain, sets jdeploy.codesign itself (so it
+      # stays out of package.json), runs `jdeploy dmg`, uploads the dmg to the release and points the
+      # release body's Mac links at it. the cert name and team id are derived from the p12 when not
+      # supplied. with notarization_password it notarizes + staples too
+      - name: Build and sign the DMG
+        uses: shannah/jdeploy-action-dmg@1.0.2
+        with:
+          # the action's own default is 4.1.2. match the jDeploy build-desktop.sh publishes with
+          jdeploy_version: '6'
+          github_token: ${{ secrets.GH_TOKEN }}
+          target_repository: ${{ env.TARGET_REPO }}
+          release_tag: ${{ github.ref_name }}
+          developer_id: ${{ secrets.MAC_DEVELOPER_ID }}
+          developer_team_id: ${{ secrets.MAC_TEAM_ID }}
+          developer_certificate_name: ${{ secrets.MAC_CERT_NAME }}
+          developer_certificate_p12_base64: ${{ secrets.MAC_CERT_P12_BASE64 }}
+          developer_certificate_password: ${{ secrets.MAC_CERT_PASSWORD }}
+          notarization_password: ${{ secrets.MAC_NOTARIZATION_PASSWORD }}

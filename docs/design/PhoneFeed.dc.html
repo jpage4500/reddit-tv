@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Phone feed</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+body{margin:0}
+button{font:inherit;color:inherit;border:0;padding:0;cursor:pointer;background:transparent}
+a{color:inherit;text-decoration:none}
+.sofascroll{scrollbar-width:none}
+.sofascroll::-webkit-scrollbar{display:none}
+@keyframes sofaprog{from{width:0%}to{width:100%}}
+.prog-on{animation:sofaprog 14s linear infinite}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0B0C0E; color: #F4F5F7; font-family: Inter, system-ui, sans-serif">
+
+<header style="position: absolute; left: 0; right: 0; top: 0; height: 56px; box-sizing: border-box; padding: 0 8px; display: flex; align-items: center; gap: 4px; background: #0B0C0E; border-bottom: 1px solid #1E2228; z-index: 2">
+<button onClick="{{toggleMenu}}" aria-label="Open menu" style="width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+</button>
+<div style="display: flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; padding-left: 4px">
+<span>{{feed}}</span>
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+</div>
+<div style="flex-grow: 1"></div>
+<button aria-label="Search" style="width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+</button>
+<div style="width: 34px; height: 34px; margin: 0 6px; border-radius: 50%; background: #3B4C63; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px">C</div>
+</header>
+
+<div class="sofascroll" style="position: absolute; left: 0; right: 0; top: 56px; bottom: 0; overflow-y: auto">
+
+<div style="display: flex; gap: 8px; padding: 10px 16px 6px">
+<span style="height: 32px; padding: 0 14px; border-radius: 16px; background: #F4F5F7; color: #0B0C0E; font-size: 14px; font-weight: 600; display: flex; align-items: center">Best</span>
+<span style="height: 32px; padding: 0 14px; border-radius: 16px; background: #1E2228; color: #D5D9E0; font-size: 14px; font-weight: 500; display: flex; align-items: center">Hot</span>
+<span style="height: 32px; padding: 0 14px; border-radius: 16px; background: #1E2228; color: #D5D9E0; font-size: 14px; font-weight: 500; display: flex; align-items: center">New</span>
+<span style="height: 32px; padding: 0 14px; border-radius: 16px; background: #1E2228; color: #D5D9E0; font-size: 14px; font-weight: 500; display: flex; align-items: center">Top</span>
+</div>
+
+<sc-for list="{{posts}}" as="p" hint-placeholder-count="3">
+<article style="padding: 12px 16px 10px; border-bottom: 1px solid #1E2228; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #AEB4BF; height: 26px">
+<span style="width: 26px; height: 26px; border-radius: 50%; color: #F4F5F7; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; background: {{p.subColor}}">{{p.initial}}</span>
+<span style="color: #F4F5F7; font-weight: 600">{{p.sub}}</span>
+<span>· {{p.age}}</span>
+</div>
+<a href="PhonePost.dc.html" style="font-size: 17px; font-weight: 600; line-height: 23px; max-height: 46px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical">{{p.title}}</a>
+
+<sc-if value="{{p.isText}}" hint-placeholder-val="{{false}}">
+<div style="font-size: 15px; line-height: 22px; color: #C9CED6; max-height: 66px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical">{{p.body}}</div>
+</sc-if>
+
+<sc-if value="{{p.isMedia}}" hint-placeholder-val="{{true}}">
+<a href="PhonePost.dc.html" aria-label="{{p.title}}" style="position: relative; display: block; width: 358px; height: 224px; border-radius: 14px; overflow: hidden; background: {{p.bg}}">
+<div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.55)">
+<svg aria-hidden="true" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="9" cy="10" r="1.6"></circle><path d="M4 18l5-5 3 3 3-4 5 6"></path></svg>
+</div>
+<sc-if value="{{p.playing}}" hint-placeholder-val="{{false}}">
+<span style="position: absolute; left: 10px; top: 10px; background: rgba(11,12,14,0.85); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 12px">Playing · muted</span>
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 4px"><div class="prog-on" style="height: 4px; background: #FF5A36"></div></div>
+</sc-if>
+<span style="position: absolute; right: 10px; bottom: 10px; background: rgba(11,12,14,0.85); font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 6px">{{p.badge}}</span>
+<sc-if value="{{p.isGallery}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; left: 0; right: 0; bottom: 12px; display: flex; justify-content: center; gap: 6px">
+<sc-for list="{{p.dots}}" as="d" hint-placeholder-count="4">
+<span style="width: 7px; height: 7px; border-radius: 50%; background: {{d.color}}"></span>
+</sc-for>
+</div>
+</sc-if>
+</a>
+</sc-if>
+
+<div style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #D5D9E0">
+<span style="height: 34px; padding: 0 12px; border-radius: 17px; background: #1A1D22; display: flex; align-items: center; gap: 8px">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5M5 12l7-7 7 7"></path></svg>
+<span>{{p.votes}}</span>
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M5 12l7 7 7-7"></path></svg>
+</span>
+<span style="height: 34px; padding: 0 12px; border-radius: 17px; background: #1A1D22; display: flex; align-items: center; gap: 6px">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"></path></svg>
+<span>{{p.comments}}</span>
+</span>
+<span style="height: 34px; padding: 0 12px; border-radius: 17px; background: #1A1D22; display: flex; align-items: center; gap: 6px">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v16l-6-4-6 4z"></path></svg>
+<span>Save</span>
+</span>
+</div>
+</article>
+</sc-for>
+</div>
+
+<sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
+<button onClick="{{toggleMenu}}" aria-label="Close menu" style="position: absolute; inset: 0; background: rgba(5,6,8,0.65); z-index: 3"></button>
+<nav aria-label="Menu" style="position: absolute; left: 0; top: 0; bottom: 0; width: 300px; background: #15181D; box-sizing: border-box; padding: 20px 12px; display: flex; flex-direction: column; gap: 2px; z-index: 4">
+<div style="display: flex; align-items: center; gap: 12px; padding: 4px 12px 16px">
+<div style="width: 36px; height: 36px; border-radius: 10px; background: #FFB84D; color: #15181D; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px">S</div>
+<span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px">Sofa</span>
+</div>
+<sc-for list="{{menu}}" as="m" hint-placeholder-count="9">
+<sc-if value="{{m.header}}" hint-placeholder-val="{{false}}">
+<div style="font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #AEB4BF; padding: 14px 12px 6px">Your communities</div>
+</sc-if>
+<button onClick="{{m.pick}}" style="height: 48px; border-radius: 24px; display: flex; align-items: center; gap: 12px; padding: 0 12px; font-size: 16px; text-align: left; background: {{m.bg}}; color: {{m.fg}}; font-weight: {{m.weight}}">
+<span style="width: 28px; height: 28px; border-radius: 50%; color: #F4F5F7; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; background: {{m.dot}}">{{m.initial}}</span>
+<span>{{m.name}}</span>
+</button>
+</sc-for>
+</nav>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const POSTS = [
+  { sub: 'r/space', initial: 's', subColor: '#2F4A5E', age: '5h', votes: '24.3k', comments: '1.2k', title: 'The Milky Way over the Atacama, stitched from 40 exposures', kind: 'image', bg: '#2F4A5E' },
+  { sub: 'r/woodworking', initial: 'w', subColor: '#5A4632', age: '9h', votes: '8.9k', comments: '342', title: 'Cutting a dovetail joint by hand, start to finish, with no power tools at all', kind: 'video', bg: '#5A4632', len: '0:42', playing: true },
+  { sub: 'r/AskReddit', initial: 'a', subColor: '#54405E', age: '3h', votes: '15.7k', comments: '6.4k', title: 'What small habit changed your life the most?', kind: 'text', body: 'Mine was learning to say no without explaining myself. It took years, and one very long week of saying yes to everything, before I noticed how much calmer I felt.' },
+  { sub: 'r/hiking', initial: 'h', subColor: '#3D5540', age: '1d', votes: '3.4k', comments: '188', title: 'Three days on the Tour du Mont Blanc in early autumn', kind: 'gallery', gallery: 4, bg: '#3D5540' },
+  { sub: 'r/space', initial: 's', subColor: '#2F4A5E', age: '14h', votes: '7.3k', comments: '412', title: 'Timelapse of a rocket launch seen from 60 miles away', kind: 'video', bg: '#3E3A5C', len: '1:15' },
+  { sub: 'r/Breadit', initial: 'b', subColor: '#5E3F3F', age: '2h', votes: '2.1k', comments: '97', title: 'My first attempt at a sourdough boule', kind: 'gallery', gallery: 3, bg: '#6B4F3A' }
+];
+const MENU = [
+  { name: 'Search', initial: '?', dot: '#2A2E37' },
+  { name: 'Home', initial: 'H', dot: '#2A2E37' },
+  { name: 'Popular', initial: 'P', dot: '#2A2E37' },
+  { name: 'Saved', initial: 'S', dot: '#2A2E37' },
+  { name: 'r/space', initial: 's', dot: '#2F4A5E', header: true },
+  { name: 'r/woodworking', initial: 'w', dot: '#5A4632' },
+  { name: 'r/AskReddit', initial: 'a', dot: '#54405E' },
+  { name: 'r/hiking', initial: 'h', dot: '#3D5540' },
+  { name: 'r/Breadit', initial: 'b', dot: '#5E3F3F' }
+];
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { open: false, feed: 'Home' };
+  }
+  renderVals() {
+    const s = this.state;
+    const posts = POSTS.map((p) => {
+      let badge = 'Photo';
+      if (p.kind === 'video') badge = p.len;
+      else if (p.kind === 'gallery') badge = '1 / ' + p.gallery;
+      const dots = [];
+      for (let j = 0; j < (p.gallery || 0); j++) dots.push({ color: j === 0 ? '#FFFFFF' : 'rgba(255,255,255,0.4)' });
+      return Object.assign({}, p, {
+        isText: p.kind === 'text',
+        isMedia: p.kind !== 'text',
+        isGallery: p.kind === 'gallery',
+        playing: !!p.playing,
+        badge, dots
+      });
+    });
+    const menu = MENU.map((m) => {
+      const on = m.name === s.feed;
+      return Object.assign({}, m, {
+        header: !!m.header,
+        bg: on ? '#F4F5F7' : 'transparent',
+        fg: on ? '#0B0C0E' : '#D5D9E0',
+        weight: on ? '700' : '500',
+        pick: () => this.setState({ feed: m.name, open: false })
+      });
+    });
+    return {
+      posts, menu,
+      feed: s.feed,
+      menuOpen: s.open,
+      toggleMenu: () => this.setState({ open: !this.state.open })
+    };
+  }
+}
+</script>
+</body>
+</html>
