@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+
+  <!-- RedditTV mark, no background: logo.svg minus its background rect. a TV-headed mascot
+       with rabbit-ear antennas, in the spirit of reddit's orange-and-white logo but not its
+       Snoo. pure geometry - no <text>, no bitmap - so rsvg-convert renders the same everywhere.
+       keep in step with logo.svg, then re-run scripts/generate-icons.sh -->
+
+  <!-- rabbit-ear antennas -->
+  <path d="M 452 404 L 372 236" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+  <path d="M 572 404 L 652 236" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+  <circle cx="366" cy="222" r="42" fill="#FFFFFF"/>
+  <circle cx="658" cy="222" r="42" fill="#FFFFFF"/>
+
+  <!-- ears -->
+  <circle cx="246" cy="560" r="58" fill="#FFFFFF"/>
+  <circle cx="778" cy="560" r="58" fill="#FFFFFF"/>
+
+  <!-- the TV: its screen is the face -->
+  <rect x="240" y="396" width="544" height="350" rx="120" fill="#FFFFFF"/>
+
+  <!-- eyes + smile -->
+  <circle cx="414" cy="548" r="46" fill="#FF4500"/>
+  <circle cx="610" cy="548" r="46" fill="#FF4500"/>
+  <path d="M 420 640 Q 512 702 604 640" fill="none" stroke="#1A1A1B" stroke-width="24" stroke-linecap="round"/>
+
+  <!-- stand -->
+  <rect x="432" y="770" width="160" height="30" rx="15" fill="#FFFFFF"/>
+</svg>

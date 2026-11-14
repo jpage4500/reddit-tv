@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 'beta' (local dev) flavor override: distinct launcher background so the
+         local-dev build is visually distinguishable from both the Play Store build
+         (#1D5682) and the auto-updating 'full' sideload build (#BA7929) on the home
+         screen. Overrides @color/ic_launcher_background from src/main for the adaptive
+         icon. keep in sync with BG_COLOR_BETA in scripts/generate-icons.sh (which bakes
+         this color into the legacy webps). -->
+    <color name="ic_launcher_background">#2E7D32</color>
+</resources>

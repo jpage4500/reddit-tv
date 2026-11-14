@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- sideload flavor overlay: REQUEST_INSTALL_PACKAGES lets the in-app updater
+     (UpdateManager / PlatformUtils.canInstallApk) install a new APK from GitHub Releases -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+</manifest>

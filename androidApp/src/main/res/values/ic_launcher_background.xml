@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- solid fill behind the adaptive foreground and around the playstore icon's
+         rounded corners. keep in sync with BG_COLOR in scripts/generate-icons.sh
+         and the automatic-gradient in Icon.icon/icon.json. -->
+    <color name="ic_launcher_background">#FF4500</color>
+</resources>

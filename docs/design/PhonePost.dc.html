@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Phone post</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+body{margin:0}
+button{font:inherit;color:inherit;border:0;padding:0;cursor:pointer;background:transparent}
+a{color:inherit;text-decoration:none}
+.sofascroll{scrollbar-width:none}
+.sofascroll::-webkit-scrollbar{display:none}
+@keyframes sofaprog{from{width:0%}to{width:100%}}
+.prog-on{animation:sofaprog 20s linear infinite}
+.prog-paused{animation:sofaprog 20s linear infinite;animation-play-state:paused}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0B0C0E; color: #F4F5F7; font-family: Inter, system-ui, sans-serif">
+
+<header style="position: absolute; left: 0; right: 0; top: 0; height: 56px; box-sizing: border-box; padding: 0 8px; display: flex; align-items: center; gap: 4px; background: #0B0C0E; border-bottom: 1px solid #1E2228; z-index: 2">
+<a href="PhoneFeed.dc.html" aria-label="Back to feed" style="width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
+</a>
+<div style="flex-grow: 1"></div>
+<button onClick="{{toggleSheet}}" aria-label="Text size" style="width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; background: {{aaBg}}">
+<span aria-hidden="true"><span style="font-size: 14px">A</span>A</span>
+</button>
+<button aria-label="Search" style="width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+</button>
+<button aria-label="Sort comments" style="width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"></path><circle cx="16" cy="7" r="2"></circle><circle cx="8" cy="17" r="2"></circle></svg>
+</button>
+<button aria-label="More options" style="width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="12" cy="19" r="1.8"></circle></svg>
+</button>
+<div style="width: 34px; height: 34px; margin: 0 6px; border-radius: 50%; background: #3B4C63; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px">C</div>
+</header>
+
+<div class="sofascroll" style="position: absolute; left: 0; right: 0; top: 56px; bottom: 0; overflow-y: auto">
+<div style="padding: 16px 16px 40px; display: flex; flex-direction: column; gap: 12px">
+
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="width: 36px; height: 36px; border-radius: 50%; background: #5A4632; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px">w</span>
+<div style="display: flex; flex-direction: column; gap: 1px; font-size: 13px; color: #AEB4BF">
+<span style="color: #F4F5F7; font-weight: 600; font-size: 14px">r/woodworking</span>
+<span>u/handplane_hal · 9h</span>
+</div>
+</div>
+
+<h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: {{fs.title}}px; line-height: 1.25">Cutting a dovetail joint by hand, start to finish, with no power tools at all</h1>
+<span style="align-self: flex-start; background: #2A2E37; color: #D5D9E0; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 6px">Video</span>
+
+<button onClick="{{togglePlay}}" aria-label="Play or pause video" style="position: relative; width: 358px; height: 238px; border-radius: 16px; overflow: hidden; background: #5A4632">
+<div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6)">
+<svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M8 5l12 7-12 7z"></path></svg>
+</div>
+<span style="position: absolute; left: 10px; top: 10px; background: rgba(11,12,14,0.85); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 12px">{{videoState}}</span>
+<span style="position: absolute; right: 10px; bottom: 12px; width: 32px; height: 32px; border-radius: 50%; background: rgba(11,12,14,0.85); display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"></path><path d="M17 9l4 6M21 9l-4 6"></path></svg>
+</span>
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(11,12,14,0.6)"><div class="{{progClass}}" style="height: 4px; background: #FF5A36"></div></div>
+</button>
+
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: {{fs.body}}px; line-height: 1.5; color: #D5D9E0">
+<p style="margin: 0">I finally got a set of dovetails I am not embarrassed by, so I filmed the whole thing. Everything here is done with a saw, two chisels, a marking gauge and a mallet.</p>
+<p style="margin: 0">The biggest change for me was sawing the tails first and marking the pins straight from them, instead of trying to lay both out with a ruler. Happy to answer questions about the tools.</p>
+</div>
+
+<div style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #D5D9E0; padding: 4px 0 12px; border-bottom: 1px solid #1E2228">
+<button onClick="{{voteUp}}" style="height: 36px; padding: 0 12px; border-radius: 18px; background: #1A1D22; display: flex; align-items: center; gap: 8px; color: {{upColor}}">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5M5 12l7-7 7 7"></path></svg>
+<span>{{votes}}</span>
+</button>
+<span style="height: 36px; padding: 0 12px; border-radius: 18px; background: #1A1D22; display: flex; align-items: center; gap: 6px">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"></path></svg>
+<span>342</span>
+</span>
+<button onClick="{{toggleSave}}" style="height: 36px; padding: 0 12px; border-radius: 18px; background: #1A1D22; display: flex; align-items: center; gap: 6px; color: {{saveColor}}">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v16l-6-4-6 4z"></path></svg>
+<span>{{saveLabel}}</span>
+</button>
+</div>
+
+<div style="font-size: 13px; font-weight: 600; color: #AEB4BF; padding-top: 2px">Sort by Best</div>
+
+<sc-for list="{{comments}}" as="c" hint-placeholder-count="6">
+<div style="display: flex">
+<sc-for list="{{c.rails}}" as="r" hint-placeholder-count="0">
+<div style="width: 2px; flex-shrink: 0; margin: 0 14px 0 4px; background: #2A2E37"></div>
+</sc-for>
+<button onClick="{{c.toggle}}" style="flex-grow: 1; min-width: 0; text-align: left; padding: 8px 0 10px; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #AEB4BF">
+<span style="width: 22px; height: 22px; border-radius: 50%; background: {{c.dot}}"></span>
+<span style="color: #F4F5F7; font-weight: 600">{{c.author}}</span>
+<sc-if value="{{c.op}}" hint-placeholder-val="{{false}}">
+<span style="background: #FFB84D; color: #15181D; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 5px">Author</span>
+</sc-if>
+<span>· {{c.age}}</span>
+</div>
+<sc-if value="{{c.open}}" hint-placeholder-val="{{true}}">
+<div style="font-size: {{fs.comment}}px; line-height: 1.45; color: #E3E6EA">{{c.text}}</div>
+<div style="display: flex; align-items: center; gap: 14px; font-size: 13px; font-weight: 600; color: #AEB4BF">
+<span>{{c.points}} points</span>
+<span>Reply</span>
+</div>
+</sc-if>
+<sc-if value="{{c.closedNote}}" hint-placeholder-val="{{false}}">
+<div style="font-size: 13px; font-weight: 600; color: #AEB4BF">{{c.note}}</div>
+</sc-if>
+</button>
+</div>
+</sc-for>
+
+</div>
+</div>
+
+<sc-if value="{{sheetOpen}}" hint-placeholder-val="{{false}}">
+<button onClick="{{toggleSheet}}" aria-label="Close text size" style="position: absolute; inset: 0; background: rgba(5,6,8,0.55); z-index: 3"></button>
+<section aria-label="Text size" style="position: absolute; left: 0; right: 0; bottom: 0; background: #17191D; border-radius: 20px 20px 0 0; padding: 12px 20px 28px; display: flex; flex-direction: column; gap: 16px; z-index: 4; box-shadow: 0 -12px 40px rgba(0,0,0,0.5)">
+<div style="width: 40px; height: 4px; border-radius: 2px; background: #3A3E46; align-self: center"></div>
+<div style="display: flex; align-items: center; justify-content: space-between">
+<span style="font-size: 17px; font-weight: 700">Text size</span>
+<span style="font-size: 14px; color: #AEB4BF">{{sizeName}} · applies everywhere</span>
+</div>
+<div style="display: flex; align-items: center; gap: 12px">
+<span aria-hidden="true" style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 14px; color: #AEB4BF">A</span>
+<div style="flex-grow: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{sizes}}" as="z" hint-placeholder-count="4">
+<button onClick="{{z.pick}}" aria-label="{{z.name}}" style="height: 44px; border-radius: 12px; font-size: 14px; font-weight: 600; background: {{z.bg}}; color: {{z.fg}}">{{z.short}}</button>
+</sc-for>
+</div>
+<span aria-hidden="true" style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; color: #AEB4BF">A</span>
+</div>
+<div style="font-size: {{fs.body}}px; line-height: 1.45; color: #D5D9E0; background: #0B0C0E; border-radius: 12px; padding: 12px 14px">Posts and comments will look like this.</div>
+</section>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const COMMENTS = [
+  { id: 1, depth: 0, author: 'u/night_joiner', dot: '#3B4C63', age: '8h', points: '1,204', text: 'Sawing the tails first and transferring is the single best tip for beginners. Your baselines are really crisp too. What gauge are you using?' },
+  { id: 2, depth: 1, parent: 1, author: 'u/handplane_hal', dot: '#5A4632', op: true, age: '8h', points: '640', text: 'A cheap wheel gauge. Honestly the trick was sharpening the wheel, not the gauge itself.' },
+  { id: 3, depth: 2, parent: 2, author: 'u/night_joiner', dot: '#3B4C63', age: '7h', points: '212', text: 'Good to know. I have been blaming the tool for years.' },
+  { id: 4, depth: 1, parent: 1, author: 'u/mortise_mae', dot: '#54405E', age: '7h', points: '188', text: 'Same advice I got from my grandfather. Saw to the waste side and let the chisel do the rest.' },
+  { id: 5, depth: 0, author: 'u/apartment_bench', dot: '#3D5540', age: '6h', points: '903', text: 'How loud is this? I live in a flat and the mallet part is what worries me.' },
+  { id: 6, depth: 1, parent: 5, author: 'u/handplane_hal', dot: '#5A4632', op: true, age: '6h', points: '415', text: 'Quieter than you would think. A leather-faced mallet and a heavy bench help a lot. Most of the noise is the bench bouncing.' },
+  { id: 7, depth: 0, author: 'u/glue_up_gary', dot: '#5E3F3F', age: '5h', points: '377', text: 'The fit at the end gave me goosebumps. No gaps, no filler. Great work.' }
+];
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { paused: false, voted: false, saved: false, closed: {}, size: 1, sheet: false };
+  }
+  renderVals() {
+    const s = this.state;
+    const hidden = {};
+    COMMENTS.forEach((c) => { if (c.parent && (s.closed[c.parent] || hidden[c.parent])) hidden[c.id] = true; });
+    const kids = {};
+    const countDesc = (id) => COMMENTS.filter((c) => c.parent === id).reduce((n, c) => n + 1 + countDesc(c.id), 0);
+    const comments = COMMENTS.filter((c) => !hidden[c.id]).map((c) => {
+      const closed = !!s.closed[c.id];
+      const rails = [];
+      for (let d = 0; d < c.depth; d++) rails.push({ d });
+      const n = countDesc(c.id);
+      return Object.assign({}, c, {
+        rails,
+        op: !!c.op,
+        open: !closed,
+        closedNote: closed,
+        note: n > 0 ? 'Collapsed · ' + n + ' more' : 'Collapsed',
+        toggle: () => this.setState({ closed: Object.assign({}, this.state.closed, { [c.id]: !this.state.closed[c.id] }) })
+      });
+    });
+    const SIZES = [['Small', 'S', 0.88], ['Medium', 'M', 1], ['Large', 'L', 1.18], ['Extra large', 'XL', 1.36]];
+    const k = SIZES[s.size][2];
+    const fs = { title: Math.round(22 * k), body: Math.round(16 * k), comment: Math.round(15 * k) };
+    const sizes = SIZES.map((z, j) => ({ name: z[0], short: z[1], bg: j === s.size ? '#F4F5F7' : '#22252B', fg: j === s.size ? '#0B0C0E' : '#D5D9E0', pick: () => this.setState({ size: j }) }));
+    return {
+      fs, sizes,
+      sizeName: SIZES[s.size][0],
+      sheetOpen: s.sheet,
+      aaBg: s.sheet ? '#22252B' : 'transparent',
+      toggleSheet: () => this.setState({ sheet: !this.state.sheet }),
+      comments,
+      videoState: s.paused ? 'Paused' : 'Playing · muted',
+      progClass: s.paused ? 'prog-paused' : 'prog-on',
+      togglePlay: () => this.setState({ paused: !this.state.paused }),
+      votes: s.voted ? '8,913' : '8,912',
+      upColor: s.voted ? '#FFB84D' : '#D5D9E0',
+      voteUp: () => this.setState({ voted: !this.state.voted }),
+      saveLabel: s.saved ? 'Saved' : 'Save',
+      saveColor: s.saved ? '#FFB84D' : '#D5D9E0',
+      toggleSave: () => this.setState({ saved: !this.state.saved })
+    };
+  }
+}
+</script>
+</body>
+</html>

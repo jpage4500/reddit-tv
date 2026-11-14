@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 'full' (sideload) flavor override: distinct launcher background so the
+         sideloaded build is visually distinguishable from the Play Store build
+         on the home screen. Overrides @color/ic_launcher_background from
+         src/main for the adaptive icon. keep in sync with BG_COLOR_FULL in
+         scripts/generate-icons.sh (which bakes this color into the legacy webps). -->
+    <color name="ic_launcher_background">#FF4500</color>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <files-path name="logs" path="." />
+    <!-- downloaded files (e.g. APK for sideload self-update) -->
+    <cache-path name="cache_downloads" path="downloads/" />
+</paths>

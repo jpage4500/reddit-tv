@@ -1,0 +1,59 @@
+# Common recommended patterns for Windows x64
+# Generated on Sat Sep 20 06:21:11 PDT 2025
+# Keep Windows x64 native libraries
+
+# Skiko (Compose Multiplatform) native libraries
+!/skiko-windows-x64.dll
+/skiko-windows-*.dll
+/libskiko-macos-*.dylib
+/libskiko-linux-*.so
+/skiko-*.dll
+/libskiko-*.dylib
+/libskiko-*.so
+
+# SQLite native libraries
+!/org/sqlite/native/Windows/x86_64
+/org/sqlite/native
+
+# LWJGL native libraries
+/linux
+/macos
+/windows/arm64
+/windows/x86
+/gdx.dll
+**libgdx*.so
+**libgdx*.dylib
+
+# FFMPEG
+/org/bytedeco/ffmpeg/macosx-arm64
+/org/bytedeco/ffmpeg/macosx-x86_64
+#/org/bytedeco/ffmpeg/windows-x86_64
+/org/bytedeco/ffmpeg/linux-x86_64
+/org/bytedeco/ffmpeg/linux-arm64
+
+# JNA
+/com/sun/jna/darwin-aarch64
+/com/sun/jna/darwin-x86-64
+#/com/sun/jna/platform/win32
+#/com/sun/jna/win32-x86
+/com/sun/jna/aix-ppc
+/com/sun/jna/linux-loongarch64
+/com/sun/jna/linux-riscv64
+/com/sun/jna/freebsd-x86
+/com/sun/jna/openbsd-x86
+/com/sun/jna/freebsd-aarch64
+/com/sun/jna/dragonflybsd-x86-64
+/com/sun/jna/freebsd-x86-64
+/com/sun/jna/openbsd-x86-64
+/com/sun/jna/linux-x86
+/com/sun/jna/linux-ppc
+/com/sun/jna/linux-arm
+/com/sun/jna/linux-x86-64
+/com/sun/jna/linux-s390x
+/com/sun/jna/linux-armel
+/com/sun/jna/linux-mips64el
+/com/sun/jna/linux-ppc64le
+/com/sun/jna/sunos-x86
+/com/sun/jna/linux-aarch64
+/com/sun/jna/sunos-sparcv9
+/com/sun/jna/sunos-x86-64

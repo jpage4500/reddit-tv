@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about">About</string>
+    <string name="alpha">Alpha</string>
+    <string name="analytics">Share Usage Data</string>
+    <string name="analytics_desc">Sends the app version, which OS it runs on and how long it was open — never your locations.</string>
+    <string name="brightness">Brightness</string>
+    <string name="build_date">Build Date</string>
+    <string name="cancel">Cancel</string>
+    <string name="check_for_updates">Check for Updates</string>
+    <string name="checking_for_updates">Checking for updates</string>
+    <string name="close">Close</string>
+    <string name="debug_mode">Debug Mode</string>
+    <string name="end_time">End</string>
+    <string name="github">GitHub</string>
+    <string name="help">Help</string>
+    <string name="menu_window">Window</string>
+    <string name="menu_minimize">Minimize</string>
+    <string name="menu_zoom">Zoom</string>
+    <string name="menu_github">%1$s on GitHub</string>
+    <string name="hex">Hex</string>
+    <string name="logs">Logs</string>
+    <string name="no_update_available">No Update Available</string>
+    <string name="open_settings">Settings</string>
+    <string name="ok">Ok</string>
+    <string name="open">Open</string>
+    <string name="pick_a_color">Pick a color</string>
+    <string name="platform">Platform</string>
+    <string name="search_devices">Search…</string>
+    <string name="select_date_time">Select Date/Time</string>
+    <string name="select_time">Select Time</string>
+    <string name="send">Send</string>
+    <string name="settings">Settings</string>
+    <string name="start_time">Start</string>
+    <string name="support">Support / Feedback</string>
+    <string name="support_hint">Describe issue or question (optional)</string>
+    <string name="type_update">Update Available</string>
+    <string name="up_to_date">You're on the latest version (%1$s)</string>
+    <string name="update_available_msg">Version %1$s (current: %2$s)</string>
+    <string name="update_button">Update</string>
+    <string name="update_check_failed">Update Check Failed</string>
+    <string name="update_download">Download</string>
+    <string name="update_download_failed">Download failed</string>
+    <string name="update_download_progress">%1$s / %2$s</string>
+    <string name="update_downloading">Downloading update…</string>
+    <string name="update_install_permission_required">Allow this app to install updates, then return here.</string>
+    <string name="update_retry">Retry</string>
+    <string name="update_via_app_store">Updates are managed by the App Store.</string>
+    <string name="update_via_play_store">Updates are managed by Google Play Store.</string>
+    <string name="version">Version</string>
+    <string name="details">Details</string>
+    <string name="view_logs">View Logs</string>
+
+    <!-- signing in to sites, media -->
+    <string name="signed_in_sites">Signed-In Sites</string>
+    <string name="signed_in">Signed in</string>
+    <string name="signed_out">Not signed in</string>
+    <string name="sign_in_title">Sign in to %1$s</string>
+    <string name="sign_out_title">Sign out of %1$s?</string>
+    <string name="sign_out_message">RedditTV won't be able to show your feed from %1$s until you sign in again</string>
+    <string name="sign_in_window">Sign in to %1$s in the browser window that opened. This closes by itself once you have</string>
+    <string name="sign_in_window_failed">Couldn't open a browser window to sign in with</string>
+    <string name="detail_copied">Copied %1$s</string>
+    <string name="video_live">LIVE</string>
+    <string name="video_playing">Playing</string>
+    <string name="video_paused">Paused</string>
+    <string name="video_muted">muted</string>
+    <string name="video_no_sound">No sound</string>
+    <string name="video_mute">Mute</string>
+    <string name="video_unmute">Unmute</string>
+    <string name="preview_failed">Couldn't play this video here</string>
+    <string name="open_in_browser">Open in Browser</string>
+    <!-- feed + menu -->
+    <string name="feed_home">Home</string>
+    <string name="feed_popular">Popular</string>
+    <string name="feed_all">All</string>
+    <string name="feed_load_failed">Couldn't load %1$s</string>
+    <string name="your_communities">Your communities</string>
+    <string name="popular_communities">Popular communities</string>
+    <string name="menu_hint">◀  Menu</string>
+    <string name="try_again">Try again</string>
+    <string name="nothing_here">Nothing here</string>
+    <string name="load_more">Load more</string>
+    <!-- community feed header -->
+    <string name="feed_join">Join</string>
+    <string name="feed_leave">Leave</string>
+    <!-- post options (long press) -->
+    <string name="post_open">Open post</string>
+    <string name="post_view_community">Go to r/%1$s</string>
+    <string name="post_join">Join r/%1$s</string>
+    <string name="post_leave">Leave r/%1$s</string>
+    <string name="post_joined">Joined r/%1$s</string>
+    <string name="post_left">Left r/%1$s</string>
+    <string name="leave_title">Leave r/%1$s?</string>
+    <string name="leave_message">Its posts will stop showing on your home feed, and it comes off your communities in the menu.</string>
+    <string name="leave">Leave</string>
+    <string name="post_join_failed">Couldn't join r/%1$s</string>
+    <string name="post_leave_failed">Couldn't leave r/%1$s</string>
+    <string name="post_sign_in_to_join">Sign in to join r/%1$s</string>
+    <!-- search -->
+    <string name="search">Search</string>
+    <string name="search_communities_hint">Search communities</string>
+    <string name="search_recent">Recent searches</string>
+    <string name="search_clear_recent">Clear recent searches</string>
+    <string name="search_matching">Communities</string>
+    <string name="search_go_to">Go to r/%1$s</string>
+    <string name="search_no_matches">No communities match “%1$s”</string>
+    <string name="search_empty">Type a community's name to find it</string>
+    <string name="search_needs_sign_in">Search needs you to sign in. Type a community's full name to open it</string>
+    <string name="key_space">space</string>
+    <string name="key_delete">delete</string>
+    <string name="key_clear">clear</string>
+    <string name="search_members">%1$s members</string>
+    <string name="back">Back</string>
+    <string name="sort_hot">Hot</string>
+    <string name="sort_new">New</string>
+    <string name="sort_top">Top</string>
+    <string name="sort_rising">Rising</string>
+    <string name="sort_feeds_info">The order posts are shown in, for every feed</string>
+    <string name="sort_hot_desc">What's popular right now</string>
+    <string name="sort_new_desc">The newest posts first</string>
+    <string name="sort_top_desc">The most upvoted posts of the last day</string>
+    <string name="sort_rising_desc">Posts that are quickly picking up votes</string>
+    <string name="badge_nsfw">NSFW</string>
+    <string name="badge_spoiler">SPOILER</string>
+    <string name="badge_gif">GIF</string>
+    <plurals name="comments_count">
+        <item quantity="one">%1$s comment</item>
+        <item quantity="other">%1$s comments</item>
+    </plurals>
+
+    <!-- post -->
+    <string name="comments_load_failed">Couldn't load comments</string>
+    <string name="sign_in_to_vote">Sign in to vote</string>
+    <string name="vote_up">▲ Up</string>
+    <string name="vote_down">▼ Down</string>
+    <string name="open_link">Open link</string>
+    <string name="comment_op">(OP)</string>
+    <plurals name="more_replies">
+        <item quantity="one">%1$d more reply</item>
+        <item quantity="other">%1$d more replies</item>
+    </plurals>
+
+    <!-- settings -->
+    <string name="text_size">Text size</string>
+    <string name="text_size_info">How big post titles, post text and comments are</string>
+    <string name="text_size_percent">%1$d%</string>
+    <string name="text_size_toast">Text size: %1$d%</string>
+    <string name="text_size_percent_default">%1$d% (default)</string>
+    <string name="sort_feeds_by">Sort feeds by</string>
+    <string name="grid_size">Grid size</string>
+    <string name="grid_size_info">How many posts across the grid shows</string>
+    <string name="grid_size_columns">%1$d columns</string>
+    <string name="grid_size_columns_default">%1$d columns (default)</string>
+    <string name="autoplay_videos">Play videos automatically</string>
+    <string name="show_nsfw">Show NSFW media</string>
+    <string name="show_nsfw_desc">Otherwise NSFW and spoiler images are blurred in the feed</string>
+    <string name="hide_pinned">Hide pinned posts</string>
+    <string name="hide_pinned_desc">Leave a community's pinned announcements out of the feed</string>
+    <string name="hide_no_media">Hide posts without media</string>
+    <string name="hide_no_media_desc">Only show posts with an image, video or link preview</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_out">Sign out</string>
+    <string name="sign_out_confirm_title">Sign out?</string>
+    <string name="sign_out_confirm_msg">Signs this device out of Reddit. You can keep browsing signed out.</string>
+
+    <!-- sign in -->
+    <string name="sign_in_with_phone">Sign in with your phone</string>
+    <string name="sign_in_step_scan">Point your phone camera at the code</string>
+    <string name="sign_in_step_type">Type your Reddit username and password on your phone</string>
+    <string name="sign_in_step_2fa">If Reddit asks for a 2FA code, enter it here with the remote</string>
+    <string name="sign_in_same_wifi">Your phone must be on the same Wi‑Fi as this TV</string>
+    <string name="sign_in_no_camera">No camera? On any phone or laptop on this Wi‑Fi, open</string>
+    <string name="sign_in_on_tv">Sign in on the TV instead</string>
+    <string name="browse_signed_out">Browse without signing in</string>
+    <string name="signing_in_as">Signing in as u/%1$s</string>
+    <string name="opening_sign_in">Opening Reddit sign-in…</string>
+    <string name="signing_in_desc">This only takes a moment</string>
+    <string name="sign_in_finish_here">Reddit needs a little more — finish here with the remote</string>
+    <string name="sign_in_needs_wifi">Connect the TV to Wi‑Fi to sign in with a phone</string>
+    <string name="phone_tagline">Browse Reddit, big and simple</string>
+    <string name="phone_sign_in_desc">Sign in on Reddit's own page — %1$s never sees your password and needs no API key.</string>
+    <string name="sign_in_to_reddit">Sign in to Reddit</string>
+
+    <!-- the phone's sign-in web page (PhoneSignInServer) -->
+    <string name="web_page_title">%1$s sign in</string>
+    <string name="web_sign_in_desc">Your TV will sign in with these. They go straight to the TV on your Wi‑Fi and aren't saved by %1$s.</string>
+    <string name="web_username">Username or email</string>
+    <string name="web_password">Password</string>
+    <string name="web_show_password">Show password</string>
+    <string name="web_submit">Sign in on TV</string>
+    <string name="web_missing_fields">Enter your username and password</string>
+    <string name="web_sent_title">Sent to your TV</string>
+    <string name="web_sent_desc">Look at the TV — it's signing in now. If Reddit asks for anything else (like a 2FA code), finish it there with the remote.</string>
+
+    <!-- logs + support -->
+    <string name="refresh_logs">Refresh logs</string>
+    <string name="open_logs_external">Open logs in default viewer</string>
+    <string name="upload_logs">Upload logs</string>
+    <string name="no_log_file">No log file to open</string>
+    <string name="log_file_open_failed">Unable to open log file</string>
+    <string name="logs_uploaded">Logs uploaded</string>
+    <string name="error_message">Error: %1$s</string>
+    <string name="search_hint">Search…</string>
+    <string name="no_logs">No logs available</string>
+    <string name="log_detail">Log Detail</string>
+    <string name="reported">Reported!</string>
+    <string name="report_failed">Error Reporting Feedback: %1$s</string>
+    <string name="logging_url_not_set">Logging URL not set</string>
+    <string name="reporting_crash">Reporting crash</string>
+    <string name="mail_unavailable">Mail not available on device</string>
+    <string name="email_unavailable">Email client not available - please email %1$s</string>
+
+    <!-- desktop menus -->
+    <string name="menu_file">File</string>
+    <string name="open_app">Open %1$s</string>
+    <string name="minimize_to_tray">Minimize to tray</string>
+    <string name="exit">Exit</string>
+
+    <!-- accessibility -->
+    <string name="cd_icon">Icon</string>
+    <string name="cd_image">Image</string>
+</resources>
