@@ -112,3 +112,5 @@ Post: comment threads draw lines like reddit, one per open branch
 11/12
 Android TV: focusing a video tile no longer jumps focus to the filter button
 Android TV: BACK opening the menu now moves focus into it, not left on the grid
+11/14
+Desktop: release builds skip the signed macOS DMG for now (notarizing fails)
