@@ -75,6 +75,7 @@
     <string name="feed_popular">Popular</string>
     <string name="feed_all">All</string>
     <string name="feed_load_failed">Couldn't load %1$s</string>
+    <string name="feed_refresh_failed">Couldn't refresh the feed</string>
     <string name="your_communities">Your communities</string>
     <string name="popular_communities">Popular communities</string>
     <string name="menu_hint">◀  Menu</string>

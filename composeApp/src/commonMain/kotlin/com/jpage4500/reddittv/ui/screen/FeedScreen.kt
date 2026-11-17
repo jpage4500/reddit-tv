@@ -21,6 +21,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.*
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +51,7 @@ import com.jpage4500.reddittv.ui.theme.LocalRedditType
 import com.jpage4500.reddittv.ui.theme.changeTextSize
 import com.jpage4500.reddittv.util.SettingsManager
 import com.jpage4500.reddittv.util.Utils
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.*
 import reddittv.composeapp.generated.resources.*
@@ -140,6 +144,17 @@ fun TvFeedScreen(
             // just look selected
             if (isFocusDriven) {
                 // let the tile pick up the focus requester first
+                withFrameNanos { }
+                runCatching { focusRequester.requestFocus() }
+            }
+        }
+    }
+
+    // a refresh replaced the posts (RootScreen has scrolled back to the top): the remote starts again
+    // on the first tile, since the one it was on has most likely gone
+    LaunchedEffect(state) {
+        snapshotFlow { state.refreshCount }.drop(1).collect {
+            if (isFocusDriven && !isMenuOpen) {
                 withFrameNanos { }
                 runCatching { focusRequester.requestFocus() }
             }
@@ -381,6 +396,15 @@ fun PhoneFeedScreen(
             runCatching { focusRequester.requestFocus() }
         }
     }
+    // a refresh replaced the posts: the keyboard starts again on the first one
+    if (isFocusDriven) LaunchedEffect(state) {
+        snapshotFlow { state.refreshCount }.drop(1).collect {
+            if (!drawerState.isOpen) {
+                withFrameNanos { }
+                runCatching { focusRequester.requestFocus() }
+            }
+        }
+    }
     // an empty feed ("Nothing here") has no posts to start on: start on ☰
     val menuFocusRequester = remember { FocusRequester() }
     val isEmpty = !hasPosts && state.isEnd
@@ -455,7 +479,23 @@ fun PhoneFeedScreen(
                 if (join != null) JoinButton(join, Modifier.padding(end = 8.dp))
             }
             }
-            Box(Modifier.weight(1f)) {
+            // pull down at the top of the list to load the feed again
+            val pullState = rememberPullToRefreshState()
+            PullToRefreshBox(
+                isRefreshing = state.isRefreshing,
+                onRefresh = { state.refresh() },
+                modifier = Modifier.weight(1f),
+                state = pullState,
+                indicator = {
+                    PullToRefreshDefaults.Indicator(
+                        state = pullState,
+                        isRefreshing = state.isRefreshing,
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        containerColor = Colors.Card,
+                        color = Colors.Accent,
+                    )
+                },
+            ) {
                 if (state.posts.isEmpty()) LogoBackdrop()
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
                     itemsIndexed(state.posts, key = { _, post -> post.id }) { index, post ->

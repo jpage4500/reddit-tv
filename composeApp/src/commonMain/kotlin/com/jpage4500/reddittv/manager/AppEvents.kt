@@ -8,4 +8,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 object AppEvents {
     // desktop File > Settings
     val openSettings = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    // the app came back to the foreground (Android / iOS; see [AppLifecycle.onForeground])
+    val foreground = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
 }

@@ -26,6 +26,7 @@ import com.jpage4500.reddittv.util.Utils
 import com.jpage4500.reddittv.util.ToastManager
 import com.jpage4500.reddittv.util.SettingsManager
 import com.jpage4500.reddittv.util.WebSession
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.*
 import reddittv.composeapp.generated.resources.*
@@ -117,7 +118,32 @@ private fun RootContent(isTv: Boolean, wide: Boolean) {
     var confirmLeave by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
 
+    // a refresh replaced the feed's posts: back to the top. done here rather than in the feed
+    // screen, which isn't there while a post is open
+    LaunchedEffect(feedState) {
+        snapshotFlow { feedState.refreshCount }.drop(1).collect {
+            focusIndex.value = 0
+            gridState.requestScrollToItem(0)
+            listState.requestScrollToItem(0)
+        }
+    }
+    // back in the app after a while: load the feed again — unless a post or search is open, where
+    // swapping the feed out from under it would lose the place to come back to
+    LaunchedEffect(feedState) {
+        AppEvents.foreground.collect {
+            if (openPost == null && !showSearch && feedState.isStale()) {
+                log.d("RootContent: back after a while, refreshing ${feed.path}")
+                feedState.refresh()
+            }
+        }
+    }
+
     fun openFeed(newFeed: Feed) {
+        // picking the feed that's already showing loads it again
+        if (newFeed == feed) {
+            feedState.refresh()
+            return
+        }
         feed = newFeed
         SettingsManager.setString(AppPref.LAST_FEED, newFeed.path)
     }

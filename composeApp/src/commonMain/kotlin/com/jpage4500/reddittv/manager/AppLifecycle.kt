@@ -18,7 +18,8 @@ private val log = LoggerConfig.createLogger("AppLifecycle")
  * on the way out and start them again on the way in.
  *
  * **[onForeground] is the refresh trigger too.** Coming back is exactly when what's on screen is
- * most likely to be stale, so [UpdateManager] checks for a new version if a day has passed.
+ * most likely to be stale, so [UpdateManager] checks for a new version if a day has passed, and
+ * [AppEvents.foreground] has the feed load again if it's been a while.
  *
  * desktop calls neither one, which leaves it in the state it starts in: a desktop window is either
  * open or the process is gone, and there's no OS restriction to work around.
@@ -42,6 +43,7 @@ object AppLifecycle {
 
         AnalyticsManager.onAppForeground()
         UpdateManager.onForeground()
+        AppEvents.foreground.tryEmit(Unit)
     }
 
     fun onBackground() {

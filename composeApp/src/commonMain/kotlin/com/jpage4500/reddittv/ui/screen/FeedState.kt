@@ -3,8 +3,10 @@ package com.jpage4500.reddittv.ui.screen
 import androidx.compose.runtime.*
 import com.jpage4500.reddittv.data.*
 import com.jpage4500.reddittv.manager.RedditClient
+import com.jpage4500.reddittv.util.DateUtils
 import com.jpage4500.reddittv.util.LoggerConfig
 import com.jpage4500.reddittv.util.SettingsManager
+import com.jpage4500.reddittv.util.ToastManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -41,6 +43,14 @@ class FeedState(
     // (a feed like r/programming with "hide posts without media" would otherwise page forever)
     var isStalled by mutableStateOf(false)
         private set
+    // a [refresh] is fetching the first page again, with the old posts still showing
+    var isRefreshing by mutableStateOf(false)
+        private set
+    // bumped each time a [refresh] replaces the posts: the screens go back to the top
+    var refreshCount by mutableStateOf(0)
+        private set
+    // when the first page last arrived. see [isStale]
+    private var loadedAtMs = 0L
 
     private var after: String? = null
     // top: which of [TOP_RANGES] is being paged. when today's top runs out the feed carries on into
@@ -48,8 +58,27 @@ class FeedState(
     private var topRange = 0
     private var job: Job? = null
 
+    /**
+     * load the feed again from the first page. with posts showing they stay until the new page
+     * arrives (and stay put if it fails); with none (an error, still loading) it starts over
+     */
     fun refresh() {
         job?.cancel()
+        isLoading = false
+        isRefreshing = false
+        if (posts.isEmpty()) {
+            reset()
+            loadMore()
+        } else {
+            load(MAX_PAGES, isFresh = true)
+        }
+    }
+
+    /** the first page arrived more than [maxAgeMs] ago */
+    fun isStale(maxAgeMs: Long = STALE_MS): Boolean =
+        loadedAtMs > 0 && DateUtils.nowMs() - loadedAtMs > maxAgeMs
+
+    private fun reset() {
         posts.clear()
         loaded.clear()
         after = null
@@ -57,7 +86,6 @@ class FeedState(
         isEnd = false
         isStalled = false
         isMostlyText = false
-        loadMore()
     }
 
     /** the user asked for more (the "Load more" button): resumes paging after [isStalled] */
@@ -72,13 +100,24 @@ class FeedState(
      */
     fun loadMore(pagesLeft: Int = MAX_PAGES) {
         if (isLoading || isEnd || isStalled) return
+        load(pagesLeft, isFresh = false)
+    }
+
+    /** fetch the next page — or with [isFresh], the first one again, replacing what's loaded */
+    private fun load(pagesLeft: Int, isFresh: Boolean) {
         isLoading = true
+        isRefreshing = isFresh
         error = null
         job = scope.launch {
             var shownCount = 0
-            val range = TOP_RANGES[topRange]
-            RedditClient.getFeed(feed, sort, after, range)
+            val range = if (isFresh) TOP_RANGES.first() else TOP_RANGES[topRange]
+            RedditClient.getFeed(feed, sort, if (isFresh) null else after, range)
                 .onSuccess { page ->
+                    if (isFresh) {
+                        reset()
+                        refreshCount++
+                    }
+                    if (loaded.isEmpty()) loadedAtMs = DateUtils.nowMs()
                     // a page can repeat a post that moved up while scrolling, and a longer top range
                     // repeats the shorter one's posts
                     val ids = loaded.mapTo(HashSet()) { it.id }
@@ -101,12 +140,23 @@ class FeedState(
                     }
                     log.d("loadMore: ${feed.path}: +${page.posts.size}, shown:$shownCount, total:${posts.size}")
                 }
-                .onFailure { error = it.message ?: getString(Res.string.feed_load_failed, feed.label.ifEmpty { getString(Res.string.feed_home) }) }
+                .onFailure {
+                    if (isFresh) {
+                        // the old posts are still good: keep them, and their paging, as they were
+                        log.e("load: ${feed.path}: refresh failed: ${it.message}")
+                        ToastManager.showToast(Res.string.feed_refresh_failed, success = false)
+                        isLoading = false
+                        isRefreshing = false
+                        return@launch
+                    }
+                    error = it.message ?: getString(Res.string.feed_load_failed, feed.label.ifEmpty { getString(Res.string.feed_home) })
+                }
             isLoading = false
+            isRefreshing = false
             // a page the hide settings emptied adds nothing to scroll towards: fetch the next one,
             // up to [MAX_PAGES] in a row
             if (error == null && !isEnd && (shownCount == 0 || posts.size < MIN_SHOWN)) {
-                if (pagesLeft > 1) loadMore(pagesLeft - 1)
+                if (pagesLeft > 1) load(pagesLeft - 1, isFresh = false)
                 else if (hideNoMedia && !isMostlyText && posts.size < MIN_SHOWN) {
                     // still too few to fill the screen: give up hiding the text posts
                     log.d("loadMore: ${feed.path}: only ${posts.size} with media after $MAX_PAGES pages, showing all")
@@ -180,6 +230,8 @@ class FeedState(
         const val MIN_MEDIA_SHARE = 0.25
         // top's time ranges, paged in turn as each runs out
         val TOP_RANGES = listOf("day", "week", "month", "year", "all")
+        // coming back to the app after this long, the feed loads again (see RootScreen)
+        const val STALE_MS = 15L * 60L * 1000L
     }
 }
 

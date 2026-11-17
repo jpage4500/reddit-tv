@@ -114,3 +114,7 @@ Android TV: focusing a video tile no longer jumps focus to the filter button
 Android TV: BACK opening the menu now moves focus into it, not left on the grid
 11/14
 Desktop: release builds skip the signed macOS DMG for now (notarizing fails)
+11/17
+Feed: coming back to the app after 15+ minutes loads the feed again
+Feed: picking the feed that's already showing in the menu reloads it
+Phone: pull down at the top of the feed to refresh it
